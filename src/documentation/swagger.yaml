@@ -1,0 +1,142 @@
+swagger: '2.0'
+info:
+  title: Properties RESTful API
+  version: '1.0.0'
+  description: An API for managing properties, users, and estate agents, including authentication features.
+host: 'localhost:3000'
+schemes:
+  - http
+basePath: '/'
+produces:
+  - application/json
+paths:
+  /auth/register:
+    post:
+      summary: Register a new user
+      description: Allows for the registration of a new user by providing name, email, and password.
+      parameters:
+        - in: body
+          name: user
+          description: The user to create
+          schema:
+            type: object
+            required:
+              - name
+              - email
+              - password
+            properties:
+              name:
+                type: string
+              email:
+                type: string
+              password:
+                type: string
+      responses:
+        201:
+          description: User registered successfully
+        400:
+          description: Error with user registration data
+
+  /auth/login:
+    post:
+      summary: User login
+      description: Allows a user to log in by providing an email and password.
+      parameters:
+        - in: body
+          name: user
+          description: The user's login credentials
+          schema:
+            type: object
+            required:
+              - email
+              - password
+            properties:
+              email:
+                type: string
+              password:
+                type: string
+      responses:
+        200:
+          description: Login successful, returns JWT token
+        400:
+          description: Invalid email or password
+
+  /users/{userId}:
+    get:
+      summary: Get user by ID
+      description: Retrieves a user's information by their ID.
+      parameters:
+        - in: path
+          name: userId
+          type: string
+          required: true
+          description: The ID of the user to retrieve.
+      responses:
+        200:
+          description: User retrieved successfully
+        404:
+          description: User not found
+
+  /properties:
+    get:
+      summary: List all properties
+      description: Retrieves a list of all properties.
+      responses:
+        200:
+          description: A list of properties
+
+  /properties/{propertyId}:
+    get:
+      summary: Get property by ID
+      description: Retrieves a property's information by its ID.
+      parameters:
+        - in: path
+          name: propertyId
+          type: string
+          required: true
+          description: The ID of the property to retrieve.
+      responses:
+        200:
+          description: Property retrieved successfully
+        404:
+          description: Property not found
+
+  /estateagents:
+    get:
+      summary: List all estate agents
+      description: Retrieves a list of all estate agents.
+      responses:
+        200:
+          description: A list of estate agents
+
+  /estateagents/{estateAgentId}:
+    get:
+      summary: Get estate agent by ID
+      description: Retrieves an estate agent's information by their ID.
+      parameters:
+        - in: path
+          name: estateAgentId
+          type: string
+          required: true
+          description: The ID of the estate agent to retrieve.
+      responses:
+        200:
+          description: Estate agent retrieved successfully
+        404:
+          description: Estate agent not found
+
+  /estateagents/{estateAgentId}/properties:
+    get:
+      summary: List properties by estate agent
+      description: Retrieves a list of properties managed by a specific estate agent.
+      parameters:
+        - in: path
+          name: estateAgentId
+          type: string
+          required: true
+          description: The ID of the estate agent whose properties to list.
+      responses:
+        200:
+          description: A list of properties
+        404:
+          description: No properties found for the estate agent

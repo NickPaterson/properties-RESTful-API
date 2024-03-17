@@ -29,6 +29,19 @@ router.get('/:id', (request, response) => {
     }
 });
 
+router.post('/', (request, response) => {
+    try {
+        const property = request.body;
+        propertyController.createProperty(property, (error, results) => {
+            return error
+                ? response.status(400).send({error: 'Property not created'})
+                : response.status(201).send({status: 'OK', data: results});
+        });
+    } catch (error) {
+        return response.status(400).send({error: 'Unexpected error while creating property'});
+    }
+});
+
 
 
 module.exports = router;

@@ -20,15 +20,16 @@ morgan.token('time', () => dateFormat.asString(dateFormat.ISO8601_FORMAT, new Da
 
 app.use(morgan('[:time] :remote-addr :method :url :status :res[content-length] :response-time ms'));
 
-app.use('/', swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 
-app.use('/auth', verifyAPI, authRouter);
+app.use('/auth', authRouter);
 
 app.use('/users', verifyAPI, verifyToken, userRouter);
 
 app.use('/properties', verifyAPI, propertyRouter);
 
 app.use('/estateagents', verifyAPI, estateAgentRouter);
+
+app.use('/', swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 
 app.listen(config.PORT, () => {
     console.log(`Listening on port ${config.PORT}`);
